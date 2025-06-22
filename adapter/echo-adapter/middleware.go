@@ -1,7 +1,6 @@
 package echoadapter
 
 import (
-	"context"
 	"github.com/ouharri/audit/core"
 	"github.com/ouharri/audit/transport"
 	"time"
@@ -52,12 +51,12 @@ func (em *EchoMw) Root() echo.MiddlewareFunc {
 			}
 
 			if auditCtx.Resource != nil && auditCtx.Action != nil {
-				go em.publish(ctx, auditCtx)
+				go em.cfg.Auditor.Audit(ctx, auditCtx.ToEvent())
 			} else {
 				// If no resource or action is set, we don't send an audit event
 				// This can happen if the middleware is used without specifying a resource/action
 				// or if the request doesn't require auditing.
-				//TODO: log this case
+				//TODO: ?? log this case
 			}
 
 			return err
@@ -86,13 +85,5 @@ func (em *EchoMw) For(resource core.EntityType) AuditableEchoActionFactory {
 				return next(c)
 			}
 		}
-	}
-}
-
-func (em *EchoMw) publish(ctx context.Context, auditCtx *core.AuditableContext) {
-	event := auditCtx.ToEvent()
-
-	if err := em.cfg.Auditor.Audit(ctx, *event); err != nil {
-		//TODO: log err
 	}
 }

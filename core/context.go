@@ -81,7 +81,7 @@ func (ac *AuditableContext) SetBulkMetadata(metadata map[string]interface{}) {
 // ToEvent converts the AuditableContext into an AuditEvent struct,
 // serializing OldData and NewData to JSON if present. The returned
 // AuditEvent is a snapshot and safe for publishing.
-func (ac *AuditableContext) ToEvent() *AuditEvent {
+func (ac *AuditableContext) ToEvent() AuditEvent {
 	ac.mu.RLock()
 	defer ac.mu.RUnlock()
 
@@ -114,5 +114,5 @@ func (ac *AuditableContext) ToEvent() *AuditEvent {
 		}
 	}
 
-	return &event
+	return event
 }

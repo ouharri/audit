@@ -11,5 +11,5 @@ import (
 type Auditor interface {
 	// Audit takes a finalized AuditEvent and delivers it to the configured sink.
 	// Ctx carries request-scoped values such as trace identifiers.
-	Audit(ctx context.Context, event core.AuditEvent) error
+	Audit(ctx context.Context, event core.AuditEvent)
 }
