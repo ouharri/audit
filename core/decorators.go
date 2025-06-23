@@ -7,8 +7,11 @@ import (
 
 // AuditableCreate records a "create" operation by setting the NewData field
 // on the AuditableContext associated with ctx.
-func AuditableCreate(ctx context.Context, newData interface{}) {
-	SetContext(ctx, WithNewData(newData))
+func AuditableCreate(ctx context.Context, resourceID any, newData interface{}) {
+	SetContext(ctx,
+		WithResourceID(resourceID),
+		WithNewData(newData),
+	)
 }
 
 // AuditableUpdate records an "update" operation by setting ResourceID,
